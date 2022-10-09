@@ -1,0 +1,66 @@
+use super::*;
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct NodeMetrics {
+    pub metadata: metav1::ObjectMeta,
+    pub usage: Usage,
+    pub timestamp: metav1::Time,
+    pub window: String,
+}
+
+impl k8s::Resource for NodeMetrics {
+    const API_VERSION: &'static str = "metrics.k8s.io/v1beta1";
+    const GROUP: &'static str = "metrics.k8s.io";
+    const KIND: &'static str = "node";
+    const VERSION: &'static str = "v1beta1";
+    const URL_PATH_SEGMENT: &'static str = "nodes";
+    type Scope = k8s::ClusterResourceScope;
+}
+
+impl k8s::Metadata for NodeMetrics {
+    type Ty = metav1::ObjectMeta;
+
+    fn metadata(&self) -> &<Self as k8s::Metadata>::Ty {
+        &self.metadata
+    }
+
+    fn metadata_mut(&mut self) -> &mut <Self as k8s::Metadata>::Ty {
+        &mut self.metadata
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use serde_json as json;
+
+    const NODE: &str = r#"{
+  "kind": "NodeMetrics",
+  "apiVersion": "metrics.k8s.io/v1beta1",
+  "metadata": {
+    "name": "docker-desktop",
+    "creationTimestamp": "2022-10-09T11:41:56Z",
+    "labels": {
+      "beta.kubernetes.io/arch": "arm64",
+      "beta.kubernetes.io/os": "linux",
+      "kubernetes.io/arch": "arm64",
+      "kubernetes.io/hostname": "docker-desktop",
+      "kubernetes.io/os": "linux",
+      "node-role.kubernetes.io/control-plane": "",
+      "node.kubernetes.io/exclude-from-external-load-balancers": ""
+    }
+  },
+  "timestamp": "2022-10-09T11:41:45Z",
+  "window": "23.5s",
+  "usage": {
+    "cpu": "196382978n",
+    "memory": "1848836Ki"
+  }
+}"#;
+
+    #[test]
+    fn resource() {
+        let node: NodeMetrics = json::from_str(NODE).unwrap();
+        assert_eq!(node.metadata.name.as_deref(), Some("docker-desktop"));
+    }
+}
