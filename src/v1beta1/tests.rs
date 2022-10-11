@@ -36,3 +36,20 @@ fn invalid_memory() {
     println!("{err}");
     assert!(err.to_string().contains("125864Ai"));
 }
+
+#[derive(Debug, Deserialize)]
+struct D {
+    #[serde(deserialize_with = "de::duration")]
+    window: time::Duration,
+}
+
+#[test]
+fn valid_duration() {
+    let d = json::from_str::<D>(r#"{"window":"12.05s"}"#).unwrap();
+    assert_eq!(d.window.as_secs_f64(), 12.05);
+}
+
+#[test]
+fn invalid_duration() {
+    json::from_str::<D>(r#"{"window":"12.05a"}"#).unwrap_err();
+}

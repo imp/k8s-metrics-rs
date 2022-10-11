@@ -1,11 +1,12 @@
 use super::*;
 
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 pub struct PodMetrics {
     pub metadata: metav1::ObjectMeta,
     pub containers: Vec<Container>,
     pub timestamp: metav1::Time,
-    pub window: String,
+    #[serde(deserialize_with = "de::duration")]
+    pub window: time::Duration,
 }
 
 impl k8s::Resource for PodMetrics {
