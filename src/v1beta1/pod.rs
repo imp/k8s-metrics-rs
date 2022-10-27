@@ -1,6 +1,6 @@
 use super::*;
 
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct PodMetrics {
     pub metadata: metav1::ObjectMeta,
     pub containers: Vec<Container>,
