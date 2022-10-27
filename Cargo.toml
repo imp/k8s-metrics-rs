@@ -9,6 +9,7 @@ license = "Apache-2.0"
 
 
 [dependencies]
+go-parse-duration = "0.1"
 k8s-openapi = { version = "0.16", features = [] }
 serde = { version = "1.0", features = ["derive"] }
 

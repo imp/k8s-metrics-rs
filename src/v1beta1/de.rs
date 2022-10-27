@@ -87,13 +87,8 @@ impl<'de> de::Visitor<'de> for DurationVisitor {
     where
         E: de::Error,
     {
-        text.split_once('s')
-            .ok_or_else(|| de::Error::custom(format!("Unexpected format: '{text}'")))
-            .and_then(|(number, _unix)| {
-                number
-                    .parse()
-                    .map_err(|_e| de::Error::custom(format!("Invalid f64 format: '{text}'")))
-            })
-            .map(time::Duration::from_secs_f64)
+        go_parse_duration::parse_duration(text)
+            .map(|nanos| time::Duration::from_nanos(nanos as u64))
+            .map_err(|_| de::Error::custom(format!("invalid duration: '{text}'")))
     }
 }
