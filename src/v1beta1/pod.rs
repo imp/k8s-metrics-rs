@@ -62,11 +62,15 @@ mod tests {
 
     #[test]
     fn resource() {
-        let pod: PodMetrics = json::from_str(POD).unwrap();
+        let mut pod: PodMetrics = json::from_str(POD).unwrap();
         assert_eq!(
             pod.metadata.name.as_deref(),
             Some("metrics-server-6db985556d-nqbdz")
         );
         assert_eq!(pod.containers.len(), 1);
+        let container = pod.containers.pop().unwrap();
+        assert_eq!(container.name, "metrics-server");
+        assert_eq!(container.usage.cpu, 0.006082165);
+        assert_eq!(container.usage.memory, 22806528);
     }
 }
