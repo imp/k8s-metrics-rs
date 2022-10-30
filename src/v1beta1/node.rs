@@ -3,10 +3,10 @@ use super::*;
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct NodeMetrics {
     pub metadata: metav1::ObjectMeta,
-    pub usage: Usage,
     pub timestamp: metav1::Time,
     #[serde(deserialize_with = "de::duration")]
     pub window: time::Duration,
+    pub usage: Usage,
 }
 
 impl k8s::Resource for NodeMetrics {
@@ -63,5 +63,8 @@ mod tests {
     fn resource() {
         let node: NodeMetrics = json::from_str(NODE).unwrap();
         assert_eq!(node.metadata.name.as_deref(), Some("docker-desktop"));
+        assert_eq!(node.window, time::Duration::from_secs_f64(23.5));
+        assert_eq!(node.usage.cpu().unwrap(), 0.196382978);
+        assert_eq!(node.usage.memory().unwrap(), 1893208064);
     }
 }

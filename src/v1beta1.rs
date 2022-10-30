@@ -9,16 +9,24 @@ mod pod;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Usage {
-    #[serde(deserialize_with = "de::cpu_deserialize")]
-    pub cpu: f64,
-    #[serde(deserialize_with = "de::memory_deserialize")]
-    pub memory: u64,
+    pub cpu: resource::Quantity,
+    pub memory: resource::Quantity,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Container {
     pub name: String,
     pub usage: Usage,
+}
+
+impl Usage {
+    pub fn cpu(&self) -> Result<f64, QuantityParseError> {
+        self.cpu.to_f64()
+    }
+
+    pub fn memory(&self) -> Result<i64, QuantityParseError> {
+        self.memory.to_memory()
+    }
 }
 
 #[cfg(test)]

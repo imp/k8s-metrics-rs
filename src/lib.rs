@@ -16,8 +16,12 @@
 
 use std::time;
 
+use k8s::apimachinery::pkg::api::resource;
+use k8s::apimachinery::pkg::apis::meta::v1 as metav1;
 use k8s_openapi as k8s;
-use k8s_openapi::apimachinery::pkg::apis::meta::v1 as metav1;
 use serde::{Deserialize, Serialize};
 
+pub use quantity::{QuantityExt, QuantityParseError};
+
+pub mod quantity;
 pub mod v1beta1;
