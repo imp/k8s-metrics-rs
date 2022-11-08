@@ -21,7 +21,8 @@ use k8s::apimachinery::pkg::apis::meta::v1 as metav1;
 use k8s_openapi as k8s;
 use serde::{Deserialize, Serialize};
 
+pub use metrics::v1beta1;
 pub use quantity::{QuantityExt, QuantityParseError};
 
+pub mod metrics;
 pub mod quantity;
-pub mod v1beta1;
