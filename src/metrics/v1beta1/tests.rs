@@ -41,7 +41,7 @@ fn invalid_memory() {
 
 #[derive(Debug, Deserialize)]
 struct D {
-    #[serde(deserialize_with = "de::duration")]
+    #[serde(with = "duration")]
     window: time::Duration,
 }
 

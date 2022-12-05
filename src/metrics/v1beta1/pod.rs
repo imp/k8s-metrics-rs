@@ -5,7 +5,7 @@ pub struct PodMetrics {
     pub metadata: metav1::ObjectMeta,
     pub containers: Vec<Container>,
     pub timestamp: metav1::Time,
-    #[serde(deserialize_with = "de::duration")]
+    #[serde(with = "duration")]
     pub window: time::Duration,
 }
 

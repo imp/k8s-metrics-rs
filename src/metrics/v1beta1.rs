@@ -3,7 +3,7 @@ use super::*;
 pub use node::NodeMetrics;
 pub use pod::PodMetrics;
 
-mod de;
+mod duration;
 mod node;
 mod pod;
 

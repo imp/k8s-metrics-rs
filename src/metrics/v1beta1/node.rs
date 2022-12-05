@@ -4,7 +4,7 @@ use super::*;
 pub struct NodeMetrics {
     pub metadata: metav1::ObjectMeta,
     pub timestamp: metav1::Time,
-    #[serde(deserialize_with = "de::duration")]
+    #[serde(with = "duration")]
     pub window: time::Duration,
     pub usage: Usage,
 }

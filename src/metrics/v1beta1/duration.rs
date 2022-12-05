@@ -1,11 +1,11 @@
 use std::fmt;
 use std::time;
 
-use serde::de;
+use serde::{de, ser};
 
 struct DurationVisitor;
 
-pub(super) fn duration<'de, D>(d: D) -> Result<time::Duration, D::Error>
+pub(super) fn deserialize<'de, D>(d: D) -> Result<time::Duration, D::Error>
 where
     D: de::Deserializer<'de>,
 {
@@ -27,4 +27,11 @@ impl<'de> de::Visitor<'de> for DurationVisitor {
             .map(|nanos| time::Duration::from_nanos(nanos as u64))
             .map_err(|_| de::Error::custom(format!("invalid duration: '{text}'")))
     }
+}
+
+pub(super) fn serialize<S>(duration: &time::Duration, serializer: S) -> Result<S::Ok, S::Error>
+where
+    S: ser::Serializer,
+{
+    serializer.serialize_str(&format!("{duration:?}"))
 }
