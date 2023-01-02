@@ -1,3 +1,5 @@
+use k8s::chrono::{DateTime, Utc};
+
 use super::*;
 
 pub use node::NodeMetrics;
@@ -7,13 +9,13 @@ mod duration;
 mod node;
 mod pod;
 
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct Usage {
     pub cpu: resource::Quantity,
     pub memory: resource::Quantity,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct Container {
     pub name: String,
     pub usage: Usage,

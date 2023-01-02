@@ -30,6 +30,17 @@ impl k8s::Metadata for PodMetrics {
     }
 }
 
+impl Default for PodMetrics {
+    fn default() -> Self {
+        Self {
+            metadata: metav1::ObjectMeta::default(),
+            containers: Vec::default(),
+            timestamp: metav1::Time(DateTime::<Utc>::default()),
+            window: time::Duration::default(),
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
