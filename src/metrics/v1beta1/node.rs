@@ -44,7 +44,7 @@ impl Default for NodeMetrics {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use serde_json as json;
+    use k8s::serde_json as json;
 
     const NODE: &str = r#"{
   "kind": "NodeMetrics",

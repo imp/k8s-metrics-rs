@@ -1,6 +1,6 @@
 use super::*;
 
-use serde_json as json;
+use k8s::serde_json as json;
 
 #[test]
 fn nano() {

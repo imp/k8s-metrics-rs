@@ -44,7 +44,7 @@ impl Default for PodMetrics {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use serde_json as json;
+    use k8s::serde_json as json;
 
     const POD: &str = r#"{
   "kind": "PodMetrics",
