@@ -18,6 +18,10 @@ impl k8s::Resource for NodeMetrics {
     type Scope = k8s::ClusterResourceScope;
 }
 
+impl k8s::ListableResource for NodeMetrics {
+    const LIST_KIND: &'static str = "NodeMetricsList";
+}
+
 impl k8s::Metadata for NodeMetrics {
     type Ty = metav1::ObjectMeta;
 
