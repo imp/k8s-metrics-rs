@@ -18,6 +18,10 @@ impl k8s::Resource for PodMetrics {
     type Scope = k8s::NamespaceResourceScope;
 }
 
+impl k8s::ListableResource for PodMetrics {
+    const LIST_KIND: &'static str = "PodMetricsList";
+}
+
 impl k8s::Metadata for PodMetrics {
     type Ty = metav1::ObjectMeta;
 
