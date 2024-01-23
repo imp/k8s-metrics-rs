@@ -6,4 +6,4 @@ verify = true
 pre-release-commit-message = "Bump version to {{version}}"
 tag-message = "{{version}}"
 tag-name = "{{version}}"
-enable-features = ["k8s-openapi/v1_28"]
+enable-features = ["k8s-openapi/latest"]
