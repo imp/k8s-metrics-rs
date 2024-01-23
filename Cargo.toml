@@ -17,6 +17,8 @@ thiserror = "1.0"
 
 [dev-dependencies]
 k8s-openapi = { version = "0.21", features = ["latest"] }
+kube = { version = "0.88" }
+tokio = { version = "1.35", features = ["full"] }
 
 
 [package.metadata.docs.rs]
