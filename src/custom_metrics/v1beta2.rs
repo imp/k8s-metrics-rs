@@ -2,7 +2,7 @@ use std::marker::PhantomData;
 
 use super::*;
 
-/// MetricIdentifier identifies a metric by name and, optionally, selector
+/// `MetricIdentifier` identifies a metric by name and, optionally, selector
 ///
 #[derive(Debug, Serialize, Deserialize)]
 pub struct MetricIdentifier {
@@ -18,7 +18,7 @@ pub struct MetricIdentifier {
     pub selector: Option<metav1::LabelSelector>,
 }
 
-/// MetricValue is the metric value for some object
+/// `MetricValue` is the metric value for some object
 ///
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename = "camelCase")]
