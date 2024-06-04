@@ -22,6 +22,8 @@ impl QuantityExt for resource::Quantity {
     fn to_f64(&self) -> Result<f64, QuantityParseError> {
         let out = if let Some((number, _unit)) = self.0.split_once('n') {
             number.parse::<f64>().map(|f| f / 1_000_000_000_f64)
+        } else if let Some((number, _unit)) = self.0.split_once('u') {
+            number.parse::<f64>().map(|f| f / 1_000_000_f64)
         } else if let Some((number, _unit)) = self.0.split_once('m') {
             number.parse::<f64>().map(|f| f / 1_000_f64)
         } else {
@@ -76,6 +78,12 @@ mod tests {
     fn cpu_nano() {
         let q = quantity("257n").to_f64().unwrap();
         assert_eq!(q, 0.000000257);
+    }
+
+    #[test]
+    fn cpu_micro() {
+        let q = quantity("303u").to_f64().unwrap();
+        assert_eq!(q, 0.000303);
     }
 
     #[test]
