@@ -58,6 +58,18 @@ impl<M: k8s::Resource> k8s::Resource for MetricValue<M> {
     type Scope = M::Scope;
 }
 
+impl<M: k8s::Metadata> k8s::Metadata for MetricValue<M> {
+    type Ty = metav1::ObjectMeta;
+
+    fn metadata(&self) -> &<Self as k8s_openapi::Metadata>::Ty {
+        &self.metadata
+    }
+
+    fn metadata_mut(&mut self) -> &mut <Self as k8s_openapi::Metadata>::Ty {
+        &mut self.metadata
+    }
+}
+
 impl<M: k8s::ListableResource> k8s::ListableResource for MetricValue<M> {
     const LIST_KIND: &'static str = "MetricValueList";
 }
