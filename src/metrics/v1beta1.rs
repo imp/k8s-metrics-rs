@@ -1,5 +1,3 @@
-use k8s::chrono::{DateTime, Utc};
-
 use super::*;
 
 pub use node::NodeMetrics;
