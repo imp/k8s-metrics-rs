@@ -49,7 +49,7 @@ pub struct MetricValue<M> {
     phantom: PhantomData<M>,
 }
 
-impl<M: CustomMetric> k8s::Resource for MetricValue<M> {
+impl<M: k8s::Resource> k8s::Resource for MetricValue<M> {
     const API_VERSION: &'static str = "custom.metrics.k8s.io/v1beta2";
     const GROUP: &'static str = "custom.metrics.k8s.io";
     const KIND: &'static str = M::KIND;
@@ -58,7 +58,7 @@ impl<M: CustomMetric> k8s::Resource for MetricValue<M> {
     type Scope = M::Scope;
 }
 
-impl<M: CustomMetric> k8s::ListableResource for MetricValue<M> {
+impl<M: k8s::ListableResource> k8s::ListableResource for MetricValue<M> {
     const LIST_KIND: &'static str = "MetricValueList";
 }
 
