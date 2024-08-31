@@ -4,6 +4,7 @@ use std::marker::PhantomData;
 use super::*;
 
 /// `ExternalMetricValue` is a metric value for external metric
+///
 /// A single metric value is identified by metric name and a set of string labels.
 /// For one metric there can be multiple values with different sets of labels.
 ///
