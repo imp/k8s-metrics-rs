@@ -15,7 +15,16 @@ pub struct MetricIdentifier {
     /// When left blank, only the metric's Name will be used to gather metrics.
     /// +optional
     ///
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub selector: Option<metav1::LabelSelector>,
+}
+
+impl MetricIdentifier {
+    pub fn new(name: impl ToString) -> Self {
+        let name = name.to_string();
+        let selector = None;
+        Self { name, selector }
+    }
 }
 
 /// `MetricValue` is the metric value for some object
@@ -46,7 +55,8 @@ pub struct MetricValue<M> {
     ///
     pub value: resource::Quantity, // `json:"value" protobuf:"bytes,5,name=value"`
 
-    phantom: PhantomData<M>,
+    #[serde(skip)]
+    pub phantom: PhantomData<M>,
 }
 
 impl<M: k8s::Resource> k8s::Resource for MetricValue<M> {
@@ -74,6 +84,8 @@ impl<M> MetricValue<M>
 where
     M: k8s::Metadata<Ty = metav1::ObjectMeta>,
 {
+    /// Create new `MetricValue` for given `object` and `namespace`
+    ///
     pub fn new(name: impl ToString, namespace: impl ToString, object: impl ToString) -> Self {
         let name = name.to_string();
         let namespace = namespace.to_string();
@@ -90,13 +102,10 @@ where
             namespace: Some(namespace),
             api_version: Some(M::API_VERSION.to_string()),
             kind: Some(M::KIND.to_string()),
-            ..Default::default()
+            ..default()
         };
 
-        let metric = MetricIdentifier {
-            name,
-            selector: None,
-        };
+        let metric = MetricIdentifier::new(name);
 
         let timestamp = metav1::Time(DateTime::<Utc>::default());
 
@@ -111,30 +120,18 @@ where
         }
     }
 
-    pub fn with_object(name: impl ToString, object: &M) -> Self {
+    /// Create `MetricValue` describing object by its `corev1::ObjectReference`
+    ///
+    pub fn with_object_ref(name: impl ToString, object_ref: &corev1::ObjectReference) -> Self {
         let name = name.to_string();
 
         let metadata = metav1::ObjectMeta {
             name: Some(name.clone()),
-            namespace: object.metadata().namespace.clone(),
+            namespace: object_ref.namespace.clone(),
             ..default()
         };
-
-        let described_object = corev1::ObjectReference {
-            name: object.metadata().name.clone(),
-            namespace: object.metadata().namespace.clone(),
-            api_version: Some(M::API_VERSION.to_string()),
-            kind: Some(M::KIND.to_string()),
-            uid: object.metadata().uid.clone(),
-            resource_version: object.metadata().resource_version.clone(),
-            ..Default::default()
-        };
-
-        let metric = MetricIdentifier {
-            name,
-            selector: None,
-        };
-
+        let described_object = object_ref.clone();
+        let metric = MetricIdentifier::new(name);
         let timestamp = metav1::Time(DateTime::<Utc>::default());
 
         Self {
@@ -146,6 +143,13 @@ where
             value: default(),
             phantom: PhantomData,
         }
+    }
+
+    /// Create `MetricValue` describing `object`
+    ///
+    pub fn with_object(name: impl ToString, object: &M) -> Self {
+        let object_ref = object_ref(object);
+        Self::with_object_ref(name, &object_ref)
     }
 }
 
@@ -154,3 +158,18 @@ impl<M: k8s::ListableResource> k8s::ListableResource for MetricValue<M> {
 }
 
 pub type MetricValueList<M> = k8s::List<MetricValue<M>>;
+
+fn object_ref<K>(object: &K) -> corev1::ObjectReference
+where
+    K: k8s::Metadata<Ty = metav1::ObjectMeta>,
+{
+    corev1::ObjectReference {
+        name: object.metadata().name.clone(),
+        namespace: object.metadata().namespace.clone(),
+        api_version: Some(K::API_VERSION.to_string()),
+        kind: Some(K::KIND.to_string()),
+        uid: object.metadata().uid.clone(),
+        resource_version: object.metadata().resource_version.clone(),
+        ..default()
+    }
+}
