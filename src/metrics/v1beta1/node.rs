@@ -1,6 +1,6 @@
 use super::*;
 
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct NodeMetrics {
     pub metadata: metav1::ObjectMeta,
     pub timestamp: metav1::Time,
