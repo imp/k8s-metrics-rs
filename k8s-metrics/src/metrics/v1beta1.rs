@@ -7,13 +7,13 @@ mod duration;
 mod node;
 mod pod;
 
-#[derive(Clone, Debug, Default, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
 pub struct Usage {
     pub cpu: resource::Quantity,
     pub memory: resource::Quantity,
 }
 
-#[derive(Clone, Debug, Default, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
 pub struct Container {
     pub name: String,
     pub usage: Usage,

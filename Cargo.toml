@@ -1,28 +1,59 @@
-[package]
-name = "k8s-metrics"
+[workspace]
+resolver = "3"
+members = ["k8s-metrics"]
+
+
+[workspace.package]
 version = "0.21.1"
 edition = "2021"
-rust-version = "1.61"
-description = "K8s Metrics API Resource definitions"
+rust-version = "1.82"
 repository = "https://github.com/imp/k8s-metrics-rs"
 license = "Apache-2.0"
 
 
-[dependencies]
+[workspace.dependencies]
 go-parse-duration = "0.1"
 k8s-openapi = { version = "0.25", features = [] }
+kube = { version = "1.1" }
 serde = { version = "1.0", features = ["derive"] }
 thiserror = "2.0"
+tokio = { version = "1.46", features = ["full"] }
 
 
-[dev-dependencies]
-k8s-openapi = { version = "0.25", features = ["latest"] }
-kube = { version = "1.0" }
-tokio = { version = "1.35", features = ["full"] }
+# [workspace.dev-dependencies]
+# k8s-openapi = { version = "0.25", features = ["latest"] }
 
 
-[package.metadata.docs.rs]
-features = ["k8s-openapi/latest"]
+[workspace.lints.clippy]
+explicit_iter_loop = "warn"
+map_flatten = "warn"
+map_unwrap_or = "warn"
+flat_map_option = "warn"
+implicit_clone = "warn"
+needless_for_each = "warn"
+semicolon_if_nothing_returned = "warn"
+uninlined_format_args = "warn"
+unused_async = "warn"
+unused_trait_names = "warn"
+use_self = "warn"
+useless_conversion = "warn"
 
-[features]
-pedantic = []
+
+[workspace.lints.rust]
+deprecated_in_future = "warn"
+future_incompatible = "warn"
+noop_method_call = "warn"
+unreachable_pub = "warn"
+missing_debug_implementations = "warn"
+rust_2018_compatibility = "warn"
+rust_2021_compatibility = "warn"
+rust_2024_compatibility = "warn"
+rust_2018_idioms = "warn"
+trivial_casts = "warn"
+trivial_numeric_casts = "warn"
+unused = "warn"
+unused_lifetimes = "warn"
+unused_qualifications = "warn"
+warnings = "deny"
+# unused_crate_dependencies = "warn"
+# non_exhaustive_omitted_patterns = "warn"

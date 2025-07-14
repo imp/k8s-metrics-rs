@@ -1,6 +1,6 @@
 use super::*;
 
-#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct PodMetrics {
     pub metadata: metav1::ObjectMeta,
     pub containers: Vec<Container>,
@@ -37,10 +37,10 @@ impl k8s::Metadata for PodMetrics {
 impl Default for PodMetrics {
     fn default() -> Self {
         Self {
-            metadata: metav1::ObjectMeta::default(),
-            containers: Vec::default(),
+            metadata: default(),
+            containers: default(),
             timestamp: metav1::Time(DateTime::<Utc>::default()),
-            window: time::Duration::default(),
+            window: default(),
         }
     }
 }
