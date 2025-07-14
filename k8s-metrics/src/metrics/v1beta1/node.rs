@@ -1,6 +1,6 @@
 use super::*;
 
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct NodeMetrics {
     pub metadata: metav1::ObjectMeta,
     pub timestamp: metav1::Time,
@@ -37,10 +37,10 @@ impl k8s::Metadata for NodeMetrics {
 impl Default for NodeMetrics {
     fn default() -> Self {
         Self {
-            metadata: metav1::ObjectMeta::default(),
+            metadata: default(),
             timestamp: metav1::Time(DateTime::<Utc>::default()),
-            window: time::Duration::default(),
-            usage: Usage::default(),
+            window: default(),
+            usage: default(),
         }
     }
 }

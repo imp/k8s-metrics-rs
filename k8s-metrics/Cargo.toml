@@ -1,0 +1,29 @@
+[package]
+name = "k8s-metrics"
+description = "K8s Metrics API Resource definitions"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+license.workspace = true
+
+
+[dependencies]
+go-parse-duration.workspace = true
+k8s-openapi.workspace = true
+serde.workspace = true
+thiserror.workspace = true
+
+
+[dev-dependencies]
+k8s-openapi = { workspace = true, features = ["latest"] }
+kube.workspace = true
+tokio.workspace = true
+
+
+[lints]
+workspace = true
+
+
+[package.metadata.docs.rs]
+features = ["k8s-openapi/latest"]
