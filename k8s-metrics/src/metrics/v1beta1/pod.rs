@@ -9,6 +9,22 @@ pub struct PodMetrics {
     pub window: time::Duration,
 }
 
+impl PodMetrics {
+    pub fn cpu(&self) -> Result<f64, QuantityParseError> {
+        self.containers
+            .iter()
+            .map(|container| container.cpu())
+            .sum()
+    }
+
+    pub fn memory(&self) -> Result<i64, QuantityParseError> {
+        self.containers
+            .iter()
+            .map(|container| container.memory())
+            .sum()
+    }
+}
+
 impl k8s::Resource for PodMetrics {
     const API_VERSION: &'static str = "metrics.k8s.io/v1beta1";
     const GROUP: &'static str = "metrics.k8s.io";

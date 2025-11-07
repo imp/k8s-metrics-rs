@@ -9,6 +9,16 @@ pub struct NodeMetrics {
     pub usage: Usage,
 }
 
+impl NodeMetrics {
+    pub fn cpu(&self) -> Result<f64, QuantityParseError> {
+        self.usage.cpu()
+    }
+
+    pub fn memory(&self) -> Result<i64, QuantityParseError> {
+        self.usage.memory()
+    }
+}
+
 impl k8s::Resource for NodeMetrics {
     const API_VERSION: &'static str = "metrics.k8s.io/v1beta1";
     const GROUP: &'static str = "metrics.k8s.io";

@@ -29,5 +29,15 @@ impl Usage {
     }
 }
 
+impl Container {
+    pub fn cpu(&self) -> Result<f64, QuantityParseError> {
+        self.usage.cpu()
+    }
+
+    pub fn memory(&self) -> Result<i64, QuantityParseError> {
+        self.usage.memory()
+    }
+}
+
 #[cfg(test)]
 mod tests;
